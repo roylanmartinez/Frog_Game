@@ -8,26 +8,30 @@ win = pygame.display.set_mode([screenWidth, screenWidth])
 pygame.display.set_caption("Frog Game")
 
 # Frog
-velFrog = 10
+velFrog = 5
 wFrog = 20
 hFrog = 20
 xFrog = screenWidth / 2 - wFrog
 yFrog = screenWidth - hFrog
-
-# Car Features
-wCar = np.array([30, 30, 30, 40, 50])
-hCar = np.array(len(wCar)*[5])
-xCar = np.array([0])
-yCar = screenWidth - hCar - wCar
-velCars = np.array([5, 3, 2, 1, 3])
-
 isJump = False
 jumpCount = -5
 
-run = True
-passedHalf = False
+# Car Features
+wCar = np.array([30, 30, 30, 40, 50])
+hCar = np.array(len(wCar)*[10])
+xCar = np.array([0, 100, 200, 300, 500])
+yCar = np.array([80, 150, 200, 310, 420])
+velCars = np.array([5, 3, 2, 1, 3])
 
+# Images
+image = pygame.image.load("./frog.png")
+background = pygame.image.load("./background.png")
+# image = pygame.transform.scale(image, (100, 100))
+
+
+run = True
 while run:
+    # print(yFrog)
     pygame.time.delay(50)
 
     # Close window
@@ -58,23 +62,32 @@ while run:
         if keys[pygame.K_SPACE]:
             isJump = True
     else:
+        # If it is jumping
         yFrog -= (jumpCount ** 2)
+        hFrog += (jumpCount ** 2) * 0.3
+        jumpCount += 1
         if yFrog < 0:
             yFrog = 0
-        jumpCount += 1
         if (jumpCount ** 2) == 0:
+            # end jump
+            hFrog = 20
             isJump = False
             jumpCount = -5
 
-    # Update black color
-    win.fill([0, 0, 0])
+    # Update background
+    win.blit(background, (0, 0))
 
     # Cars update
-    xCar += 5
-    if xCar > screenWidth:
-        xCar = -wCar
-    # Update the board
-    pygame.draw.rect(win, [255, 0, 0], [xFrog, yFrog, wFrog, hFrog])
-    pygame.draw.rect(win, [255, 255, 255], [xCar, yCar, wCar, hCar])
+    for index_car in range(len(wCar)):
+        xCar[index_car] -= 5
+        if xCar[index_car] + wCar[index_car] < 0:
+            xCar[index_car] = screenWidth
+        pygame.draw.rect(win, [255, 255, 255], [xCar[index_car], yCar[index_car], wCar[index_car], hCar[index_car]])
+
+    # Update the frog
+    win.blit(image, (xFrog, yFrog))
+
+    # Update the game
     pygame.display.update()
+
 pygame.quit()
