@@ -28,7 +28,7 @@ isJump = [False, False]
 jumpCount = [-5, -5]
 
 # Car Features
-difficulty = 0
+difficulty = 1
 wCar = np.array([32, 32, 64, 32, 32, 32, 64, 32, 32, 32, 32, 64, 32, 32, 32, 64, 32, 32, 32, 32, 64])
 hCar = np.array(wCar.copy())
 xCar = np.array([62, 124, 186, 250, 310, 372, 100, 450, 0, 262, 324, 386, 450, 110, 172, 0, 150, 100, 400, 0, 220])
